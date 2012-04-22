@@ -80,6 +80,9 @@ KEYNAME = mykey
 CLUSTER_SIZE = 2
 # create the following user on the cluster
 CLUSTER_USER = sgeadmin
+# optionnaly specify the VPCID of the VPC the
+# cluster should be started on
+VPC_ID = vpcid
 # optionally specify shell (defaults to bash)
 # (options: %(shells)s)
 CLUSTER_SHELL = bash

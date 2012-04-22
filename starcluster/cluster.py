@@ -320,6 +320,7 @@ class ClusterManager(managers.Manager):
 class Cluster(object):
     def __init__(self,
             ec2_conn=None,
+            vpc_id = None,
             spot_bid=None,
             cluster_tag=None,
             cluster_description=None,
@@ -347,6 +348,7 @@ class Cluster(object):
 
         now = time.strftime("%Y%m%d%H%M")
         self.ec2 = ec2_conn
+        self.vpc_id = vpc_id
         self.spot_bid = spot_bid
         self.cluster_tag = cluster_tag
         self.cluster_description = cluster_description

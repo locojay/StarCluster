@@ -72,8 +72,11 @@ class EasyEC2(EasyAWS):
                       port=aws_port, path=aws_ec2_path, proxy=aws_proxy,
                       proxy_port=aws_proxy_port, proxy_user=aws_proxy_user,
                       proxy_pass=aws_proxy_pass)
+        boto_conn = boto.connect_ec2
+        if 'vpc_id' in kwargs:
+            boto_conn = boto.connect_vpc
         super(EasyEC2, self).__init__(aws_access_key_id, aws_secret_access_key,
-                                      boto.connect_ec2, **kwargs)
+                                      boto_conn, **kwargs)
         kwargs = dict(aws_s3_host=aws_s3_host, aws_s3_path=aws_s3_path,
                       aws_port=aws_port, aws_is_secure=aws_is_secure,
                       aws_proxy=aws_proxy, aws_proxy_port=aws_proxy_port,
@@ -153,7 +156,7 @@ class EasyEC2(EasyAWS):
                 return img
 
     def create_group(self, name, description, auth_ssh=False,
-                     auth_group_traffic=False):
+                     auth_group_traffic=False, vpc_id=None):
         """
         Create security group with name/description. auth_ssh=True
         will open port 22 to world (0.0.0.0/0). auth_group_traffic
@@ -163,7 +166,7 @@ class EasyEC2(EasyAWS):
         if not name:
             return None
         log.info("Creating security group %s..." % name)
-        sg = self.conn.create_security_group(name, description)
+        sg = self.conn.create_security_group(name, description, vpc_id)
         if auth_ssh:
             ssh_port = static.DEFAULT_SSH_PORT
             sg.authorize('tcp', ssh_port, ssh_port, static.WORLD_CIDRIP)
