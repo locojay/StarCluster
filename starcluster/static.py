@@ -62,7 +62,7 @@ BASE_AMI_32 = "ami-899d49e0"
 BASE_AMI_64 = "ami-999d49f0"
 BASE_AMI_HVM = "ami-4583572c"
 
-SECURITY_GROUP_PREFIX = "@sc"
+SECURITY_GROUP_PREFIX = "sc"
 SECURITY_GROUP_TEMPLATE = '-'.join([SECURITY_GROUP_PREFIX, "%s"])
 MASTER_GROUP_NAME = "masters"
 MASTER_GROUP = SECURITY_GROUP_TEMPLATE % MASTER_GROUP_NAME
@@ -145,6 +145,7 @@ AWS_SETTINGS = {
     'aws_proxy_port': (int, False, None, None, None),
     'aws_proxy_user': (str, False, None, None, None),
     'aws_proxy_pass': (str, False, None, None, None),
+    'vpc_id': (str, False, None, None, None),
 }
 
 KEY_SETTINGS = {
@@ -181,7 +182,6 @@ CLUSTER_SETTINGS = {
     'cluster_size': (int, True, None, None, None),
     'cluster_user': (str, False, 'sgeadmin', None, None),
     'cluster_shell': (str, False, 'bash', AVAILABLE_SHELLS.keys(), None),
-    'vpc_id': (str, False, None, None, None),
     'master_image_id': (str, False, None, None, None),
     'master_instance_type': (str, False, None, INSTANCE_TYPES.keys(), None),
     'node_image_id': (str, True, None, None, None),
