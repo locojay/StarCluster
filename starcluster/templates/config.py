@@ -42,6 +42,9 @@ AWS_USER_ID= #your userid
 #AWS_PROXY_PORT = 8080
 #AWS_PROXY_USER = yourproxyuser
 #AWS_PROXY_PASS = yourproxypass
+# optionnaly specify the VPCID of the VPC the
+# cluster should be started on
+#VPC_ID = vpc-6b1fe402
 
 ###########################
 ## Defining EC2 Keypairs ##
@@ -80,9 +83,6 @@ KEYNAME = mykey
 CLUSTER_SIZE = 2
 # create the following user on the cluster
 CLUSTER_USER = sgeadmin
-# optionnaly specify the VPCID of the VPC the
-# cluster should be started on
-VPC_ID = vpcid
 # optionally specify shell (defaults to bash)
 # (options: %(shells)s)
 CLUSTER_SHELL = bash

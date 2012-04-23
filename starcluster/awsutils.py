@@ -63,7 +63,8 @@ class EasyEC2(EasyAWS):
                  aws_ec2_path='/', aws_s3_host=None, aws_s3_path='/',
                  aws_port=None, aws_region_name=None, aws_is_secure=True,
                  aws_region_host=None, aws_proxy=None, aws_proxy_port=None,
-                 aws_proxy_user=None, aws_proxy_pass=None, **kwargs):
+                 aws_proxy_user=None, aws_proxy_pass=None, vpc_id=None,
+                 **kwargs):
         aws_region = None
         if aws_region_name and aws_region_host:
             aws_region = boto.ec2.regioninfo.RegionInfo(
@@ -73,7 +74,9 @@ class EasyEC2(EasyAWS):
                       proxy_port=aws_proxy_port, proxy_user=aws_proxy_user,
                       proxy_pass=aws_proxy_pass)
         boto_conn = boto.connect_ec2
-        if 'vpc_id' in kwargs:
+        self.vpc_id = vpc_id
+        print self.vpc_id
+        if vpc_id:
             boto_conn = boto.connect_vpc
         super(EasyEC2, self).__init__(aws_access_key_id, aws_secret_access_key,
                                       boto_conn, **kwargs)
@@ -156,7 +159,7 @@ class EasyEC2(EasyAWS):
                 return img
 
     def create_group(self, name, description, auth_ssh=False,
-                     auth_group_traffic=False, vpc_id=None):
+                     auth_group_traffic=False):
         """
         Create security group with name/description. auth_ssh=True
         will open port 22 to world (0.0.0.0/0). auth_group_traffic
@@ -166,7 +169,9 @@ class EasyEC2(EasyAWS):
         if not name:
             return None
         log.info("Creating security group %s..." % name)
-        sg = self.conn.create_security_group(name, description, vpc_id)
+        print self.vpc_id
+        print description
+        sg = self.conn.create_security_group(name, description, self.vpc_id)
         if auth_ssh:
             ssh_port = static.DEFAULT_SSH_PORT
             sg.authorize('tcp', ssh_port, ssh_port, static.WORLD_CIDRIP)
@@ -365,6 +370,8 @@ class EasyEC2(EasyAWS):
     def run_instances(self, image_id, instance_type='m1.small', min_count=1,
                       max_count=1, key_name=None, security_groups=None,
                       placement=None, user_data=None, placement_group=None):
+        print self.conn
+        1/0
         return self.conn.run_instances(image_id, instance_type=instance_type,
                                        min_count=min_count,
                                        max_count=max_count,
