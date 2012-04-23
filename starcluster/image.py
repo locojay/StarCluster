@@ -40,7 +40,6 @@ class ImageCreator(object):
         log.info('Removing private data...')
         conn = self.host_ssh
         conn.execute('find /home -maxdepth 1 -type d -exec rm -rf {}/.ssh \;')
-        conn.execute('rm -f /etc/ssh/ssh_host*key*')
         conn.execute('rm -f /var/log/secure')
         conn.execute('rm -f /var/log/lastlog')
         conn.execute('rm -rf /root/*')
